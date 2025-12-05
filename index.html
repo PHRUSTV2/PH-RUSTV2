@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhrustV2 Minecraft Server</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Minecraftia&family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --mc-dark-red: #8B0000;
+            --mc-red: #D32F2F;
+            --mc-light-red: #FF5252;
+            --mc-dark-black: #0a0a0a;
+            --mc-black: #1a1a1a;
+            --mc-gray: #333333;
+            --mc-light-gray: #4a4a4a;
+            --mc-text: #f0f0f0;
+            --discord-blurple: #5865F2;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #000000;
+            color: var(--mc-text);
+            line-height: 1.6;
+            background-image: 
+                linear-gradient(rgba(10, 10, 10, 0.9), rgba(10, 10, 10, 0.9)),
+                url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: rgba(10, 10, 10, 0.95);
+            padding: 15px 0;
+            border-bottom: 4px solid var(--mc-red);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: var(--mc-text);
+        }
+
+        .logo-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 3px solid var(--mc-red);
+            transition: all 0.3s;
+            box-shadow: 0 0 10px rgba(211, 47, 47, 0.5);
+        }
+
+        .logo-img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(211, 47, 47, 0.8);
+        }
+
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 28px;
+            color: var(--mc-light-red);
+            text-shadow: 0 0 10px rgba(255, 82, 82, 0.7);
+            letter-spacing: 1px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        nav a {
+            color: var(--mc-text);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 10px 18px;
+            border-radius: 4px;
+            transition: all 0.3s;
+            font-size: 18px;
+            border: 1px solid transparent;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        nav a:hover, nav a.active {
+            background-color: var(--mc-red);
+            color: white;
+            border-color: var(--mc-light-red);
+            box-shadow: 0 0 10px rgba(211, 47, 47, 0.5);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--mc-text);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Page Styles */
+        .page {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            display: flex;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .sidebar {
+            width: 25%;
+            background-color: rgba(26, 26, 26, 0.9);
+            border-radius: 10px;
+            padding: 20px;
+            border: 2px solid var(--mc-red);
+            height: fit-content;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .content {
+            width: 75%;
+            background-color: rgba(26, 26, 26, 0.9);
+            border-radius: 10px;
+            padding: 30px;
+            border: 2px solid var(--mc-red);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--mc-light-red);
+            font-size: 24px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--mc-red);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-shadow: 0 0 5px rgba(255, 82, 82, 0.5);
+        }
+
+        .section-title i {
+            color: var(--mc-red);
+        }
+
+        /* Discord Invite Styles */
+        .discord-invite {
+            background-color: rgba(51, 51, 51, 0.95);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid var(--discord-blurple);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .discord-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .discord-icon {
+            background-color: var(--discord-blurple);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 0 10px rgba(88, 101, 242, 0.5);
+        }
+
+        .discord-info h3 {
+            color: white;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .discord-info p {
+            color: #b9bbbe;
+            font-size: 14px;
+        }
+
+        .discord-members {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .member-avatars {
+            display: flex;
+        }
+
+        .member-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: var(--mc-gray);
+            margin-left: -8px;
+            border: 2px solid var(--mc-black);
+        }
+
+        .member-avatar:first-child {
+            margin-left: 0;
+        }
+
+        .member-count {
+            color: #b9bbbe;
+            font-size: 14px;
+        }
+
+        .accept-btn {
+            background-color: var(--discord-blurple);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: all 0.3s;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 0.5px;
+        }
+
+        .accept-btn:hover {
+            background-color: #4752c4;
+            box-shadow: 0 0 10px rgba(88, 101, 242, 0.7);
+        }
+
+        /* Server Info Styles */
+        .server-info {
+            background-color: rgba(51, 51, 51, 0.95);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .server-ip {
+            background-color: rgba(10, 10, 10, 0.9);
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--mc-red);
+        }
+
+        .server-ip-title {
+            font-weight: bold;
+            color: var(--mc-light-red);
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .server-ip-address {
+            font-family: monospace;
+            background-color: #0a0a0a;
+            padding: 8px;
+            border-radius: 4px;
+            color: var(--mc-light-red);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #333;
+        }
+
+        .copy-btn {
+            background-color: var(--mc-dark-red);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background-color 0.3s;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .copy-btn:hover {
+            background-color: var(--mc-red);
+        }
+
+        .description {
+            margin-top: 20px;
+            font-style: italic;
+            color: #b9bbbe;
+            padding: 15px;
+            background-color: rgba(10, 10, 10, 0.7);
+            border-radius: 5px;
+            text-align: center;
+            border: 1px solid #333;
+        }
+
+        /* Unraidable Cave Form */
+        .cave-form {
+            background-color: rgba(51, 51, 51, 0.95);
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid var(--mc-red);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--mc-light-red);
+            font-weight: 500;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            background-color: rgba(10, 10, 10, 0.9);
+            border: 1px solid var(--mc-gray);
+            border-radius: 4px;
+            color: var(--mc-text);
+            font-family: 'Roboto', sans-serif;
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--mc-red);
+            box-shadow: 0 0 5px rgba(211, 47, 47, 0.5);
+        }
+
+        .input-control {
+            width: 100%;
+            padding: 12px;
+            background-color: rgba(10, 10, 10, 0.9);
+            border: 1px solid var(--mc-gray);
+            border-radius: 4px;
+            color: var(--mc-text);
+            font-family: 'Roboto', sans-serif;
+            min-height: auto;
+        }
+
+        .input-control:focus {
+            outline: none;
+            border-color: var(--mc-red);
+            box-shadow: 0 0 5px rgba(211, 47, 47, 0.5);
+        }
+
+        .send-btn {
+            background-color: var(--mc-dark-red);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0 auto;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 0.5px;
+        }
+
+        .send-btn:hover {
+            background-color: var(--mc-red);
+            box-shadow: 0 0 10px rgba(211, 47, 47, 0.7);
+        }
+
+        .send-btn:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .send-btn:disabled:hover {
+            box-shadow: none;
+        }
+
+        /* Footer Styles */
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(10, 10, 10, 0.95);
+            border-top: 4px solid var(--mc-red);
+            color: #b9bbbe;
+            font-size: 14px;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Success & Error Messages */
+        .success-message {
+            background-color: rgba(139, 0, 0, 0.2);
+            border: 1px solid var(--mc-red);
+            color: var(--mc-light-red);
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .error-message {
+            background-color: rgba(139, 0, 0, 0.3);
+            border: 1px solid var(--mc-red);
+            color: var(--mc-light-red);
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .cooldown-message {
+            background-color: rgba(85, 85, 85, 0.3);
+            border: 1px solid #555;
+            color: #b9bbbe;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .cooldown-message.show {
+            display: block;
+        }
+
+        /* Discord Profile */
+        .discord-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background-color: rgba(51, 51, 51, 0.7);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 1px solid #333;
+        }
+
+        .discord-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid var(--discord-blurple);
+        }
+
+        .discord-profile-info h4 {
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .discord-profile-info p {
+            color: #b9bbbe;
+            font-size: 14px;
+        }
+
+        /* Loading Spinner */
+        .loader {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--mc-red);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Real-time Discord Stats */
+        .discord-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .stat-item {
+            text-align: center;
+            flex: 1;
+            padding: 10px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--mc-light-red);
+            text-shadow: 0 0 5px rgba(255, 82, 82, 0.5);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #b9bbbe;
+            margin-top: 5px;
+        }
+
+        /* Online Indicator */
+        .online-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #3ba55c;
+            border-radius: 50%;
+            margin-right: 5px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 992px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar, .content {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .logo-text {
+                font-size: 24px;
+            }
+            
+            .discord-stats {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <a href="#" class="logo" id="homeLogo">
+                <img src="https://ik.imagekit.io/x7wxtmxra/c61293e3ec5494dafade8929187016cd.webp" alt="PhrustV2 Logo" class="logo-img">
+                <span class="logo-text">PHRUSTV2</span>
+            </a>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav>
+                <ul id="navMenu">
+                    <li><a href="#home" class="nav-link active" data-page="home">Home</a></li>
+                    <li><a href="#unraidable-cave" class="nav-link" data-page="unraidable-cave">Unraidable Cave</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Home Page -->
+        <div id="home-page" class="page active">
+            <div class="main-content">
+                <aside class="sidebar">
+                    <h2 class="section-title"><i class="fas fa-server"></i> Server Information</h2>
+                    
+                    <div class="server-info">
+                        <div class="server-ip">
+                            <div class="server-ip-title">
+                                <i class="fas fa-network-wired"></i> Primary Server IP
+                            </div>
+                            <div class="server-ip-address">
+                                phrustv2.hopto.org
+                                <button class="copy-btn" data-ip="phrustv2.hopto.org">Copy</button>
+                            </div>
+                        </div>
+                        
+                        <div class="server-ip">
+                            <div class="server-ip-title">
+                                <i class="fas fa-globe"></i> Alternative IP 1
+                            </div>
+                            <div class="server-ip-address">
+                                mc.phrustv2.qzz.io
+                                <button class="copy-btn" data-ip="mc.phrustv2.qzz.io">Copy</button>
+                            </div>
+                        </div>
+                        
+                        <div class="server-ip">
+                            <div class="server-ip-title">
+                                <i class="fas fa-gamepad"></i> Alternative IP 2
+                            </div>
+                            <div class="server-ip-address">
+                                play.phrustv2.qzz.io
+                                <button class="copy-btn" data-ip="play.phrustv2.qzz.io">Copy</button>
+                            </div>
+                        </div>
+                        
+                        <div class="description">
+                            <i class="fas fa-quote-left"></i> This Minecraft Server Created By Jameszxc_. <i class="fas fa-quote-right"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="server-info">
+                        <h3 class="section-title" style="font-size: 20px;"><i class="fas fa-users"></i> Online Players</h3>
+                        <div style="text-align: center; padding: 20px;">
+                            <div style="font-size: 36px; color: var(--mc-light-red); font-weight: bold; text-shadow: 0 0 5px rgba(255, 82, 82, 0.5);" id="minecraftPlayers">24/50</div>
+                            <div style="color: #b9bbbe; margin-top: 10px;">Players Online</div>
+                        </div>
+                    </div>
+
+                    <div class="discord-profile">
+                        <img src="https://ik.imagekit.io/x7wxtmxra/images.jpg" alt="Server Owner" class="discord-avatar">
+                        <div class="discord-profile-info">
+                            <h4>Jameszxc_</h4>
+                            <p>Server Owner</p>
+                            <div><span class="online-indicator"></span> Online</div>
+                        </div>
+                    </div>
+                </aside>
+
+                <main class="content">
+                    <h2 class="section-title"><i class="fas fa-home"></i> Welcome to PhrustV2</h2>
+                    
+                    <div class="discord-invite">
+                        <div class="discord-header">
+                            <div class="discord-icon">
+                                <img src="https://ik.imagekit.io/x7wxtmxra/c61293e3ec5494dafade8929187016cd.webp" alt="Discord Server" style="width: 100%; height: 100%; border-radius: 50%;">
+                            </div>
+                            <div class="discord-info">
+                                <h3>Join Our Discord Community</h3>
+                                <p>Connect with other players, get updates, and participate in events!</p>
+                            </div>
+                        </div>
+                        
+                        <div class="discord-stats">
+                            <div class="stat-item">
+                                <div class="stat-value" id="discordMembers">127</div>
+                                <div class="stat-label">Total Members</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="discordOnline">89</div>
+                                <div class="stat-label">Online Now</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="discordBoost">5</div>
+                                <div class="stat-label">Server Boosts</div>
+                            </div>
+                        </div>
+                        
+                        <div class="discord-members">
+                            <div class="member-avatars" id="onlineAvatars">
+                                <!-- Online avatars will be populated by JavaScript -->
+                            </div>
+                            <div class="member-count">
+                                <strong id="onlineCount">89</strong> members online
+                            </div>
+                        </div>
+                        
+                        <button class="accept-btn" id="discordInviteBtn">
+                            <i class="fab fa-discord"></i> Accept Invite
+                        </button>
+                    </div>
+                    
+                    <div class="server-info">
+                        <h3 class="section-title" style="font-size: 20px;"><i class="fas fa-info-circle"></i> About Our Server</h3>
+                        <p style="margin-bottom: 15px;">Welcome to PhrustV2, a survival Minecraft server with a friendly community and exciting features. Our server offers:</p>
+                        <ul style="padding-left: 20px; margin-bottom: 15px;">
+                            <li>Survival gameplay with land claiming</li>
+                            <li>Economy system with player shops</li>
+                            <li>Regular events and competitions</li>
+                            <li>Friendly and active staff team</li>
+                            <li>Custom plugins for enhanced gameplay</li>
+                            <li>Unraidable cave system for dedicated players</li>
+                        </ul>
+                        <p>Join us today and become part of our growing community!</p>
+                    </div>
+
+                    <div class="server-info">
+                        <h3 class="section-title" style="font-size: 20px;"><i class="fas fa-shield-alt"></i> Unraidable Cave System</h3>
+                        <p style="margin-bottom: 15px;">Our server features a unique unraidable cave system for dedicated players. To request an unraidable cave:</p>
+                        <ol style="padding-left: 20px; margin-bottom: 15px;">
+                            <li>Navigate to the "Unraidable Cave" page</li>
+                            <li>Explain why you need an unraidable cave</li>
+                            <li>Submit your request</li>
+                            <li>Our staff will review and respond via Discord</li>
+                        </ol>
+                        <p style="color: var(--mc-light-red); margin-bottom: 15px;"><i class="fas fa-clock"></i> <strong>Cooldown:</strong> You can only submit one request every 24 hours.</p>
+                        <a href="#unraidable-cave" class="nav-link" data-page="unraidable-cave" style="display: inline-block; margin-top: 10px;">
+                            <button class="send-btn" style="margin: 0;">
+                                <i class="fas fa-mountain"></i> Request Unraidable Cave
+                            </button>
+                        </a>
+                    </div>
+                </main>
+            </div>
+        </div>
+
+        <!-- Unraidable Cave Page -->
+        <div id="unraidable-cave-page" class="page">
+            <div class="main-content">
+                <aside class="sidebar">
+                    <h2 class="section-title"><i class="fas fa-info-circle"></i> Request Info</h2>
+                    
+                    <div class="server-info">
+                        <h3 class="section-title" style="font-size: 20px;"><i class="fas fa-exclamation-triangle"></i> Requirements</h3>
+                        <ul style="padding-left: 20px; margin-bottom: 15px;">
+                            <li>Must be active for at least 2 weeks</li>
+                            <li>No recent bans or warnings</li>
+                            <li>Provide detailed reasoning</li>
+                            <li>Agree to server rules</li>
+                        </ul>
+                        
+                        <h3 class="section-title" style="font-size: 20px; margin-top: 20px;"><i class="fas fa-history"></i> Cooldown System</h3>
+                        <p>You can only submit one request every 24 hours. This prevents spam and ensures fair distribution.</p>
+                        
+                        <div style="margin-top: 20px; padding: 15px; background-color: rgba(139, 0, 0, 0.2); border-radius: 5px; border: 1px solid #333;">
+                            <h4 style="color: var(--mc-light-red); margin-bottom: 10px;">Your Cooldown Status</h4>
+                            <div id="cooldownTimer" style="text-align: center; font-size: 18px; color: #b9bbbe;">Ready to submit!</div>
+                        </div>
+                    </div>
+
+                    <div class="discord-profile">
+                        <img src="https://ik.imagekit.io/x7wxtmxra/c61293e3ec5494dafade8929187016cd.webp" alt="Discord Bot" class="discord-avatar">
+                        <div class="discord-profile-info">
+                            <h4>CaveRequest Bot</h4>
+                            <p>Will process your request</p>
+                            <div><span class="online-indicator"></span> Connected</div>
+                        </div>
+                    </div>
+                </aside>
+
+                <main class="content">
+                    <h2 class="section-title"><i class="fas fa-mountain"></i> Unraidable Cave Request</h2>
+                    
+                    <div class="success-message" id="successMessage">
+                        <i class="fas fa-check-circle"></i> Your request has been submitted to our Discord bot! You'll receive a DM in our Discord server with further instructions.
+                    </div>
+                    
+                    <div class="error-message" id="errorMessage">
+                        <i class="fas fa-exclamation-circle"></i> <span id="errorText">An error occurred. Please try again later.</span>
+                    </div>
+                    
+                    <div class="cooldown-message" id="cooldownMessage">
+                        <i class="fas fa-clock"></i> <span id="cooldownText">You need to wait before submitting another request.</span>
+                    </div>
+                    
+                    <div class="loader" id="requestLoader"></div>
+                    
+                    <div class="cave-form">
+                        <p style="margin-bottom: 20px;">Request an unraidable cave for your base. Please explain why you need an unraidable cave and how it will improve your gameplay experience. Our Discord bot will send you a DM with the status of your request.</p>
+                        
+                        <div class="form-group">
+                            <label for="minecraftUsername"><i class="fas fa-user"></i> Minecraft Username *</label>
+                            <input type="text" id="minecraftUsername" class="input-control" placeholder="YourMinecraftName" required>
+                            <small style="color: #888; font-size: 12px;">Only your Minecraft username is required (3-16 characters)</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="reason"><i class="fas fa-edit"></i> Why do you want an unraidable cave? *</label>
+                            <textarea id="reason" class="form-control" placeholder="Explain your reasons here... Be as detailed as possible." required minlength="20"></textarea>
+                            <small style="color: #888; font-size: 12px;">Minimum 20 characters. Explain why you need protection from rocket launchers.</small>
+                        </div>
+                        
+                        <button class="send-btn" id="sendRequestBtn">
+                            <i class="fas fa-paper-plane"></i> Submit to Discord Bot
+                        </button>
+                    </div>
+                    
+                    <div class="server-info" style="margin-top: 30px;">
+                        <h3 class="section-title" style="font-size: 20px;"><i class="fas fa-robot"></i> Discord Bot Integration</h3>
+                        <p>When you submit your request, our Discord bot will:</p>
+                        <ul style="padding-left: 20px; margin-top: 10px;">
+                            <li>Post your request in our staff channel</li>
+                            <li>Send you a confirmation DM on Discord</li>
+                            <li>Notify you when your request is reviewed</li>
+                            <li>Provide next steps if approved</li>
+                        </ul>
+                        <div style="margin-top: 15px; padding: 10px; background-color: rgba(10, 10, 10, 0.7); border-radius: 5px;">
+                            <p style="color: var(--mc-light-red);"><i class="fas fa-exclamation-circle"></i> <strong>Important:</strong> Make sure you're in our Discord server to receive notifications!</p>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>PhrustV2 Minecraft Server &copy; 2023 | Created by Jameszxc_</p>
+            <p style="margin-top: 10px; font-size: 12px;">This website is not affiliated with Mojang or Microsoft. All trademarks are property of their respective owners.</p>
+        </div>
+    </footer>
+
+    <script>
+        // ==================== CONFIGURATION ====================
+        // Your Discord bot API endpoint (running on altr.cc)
+        const BOT_API_URL = 'http://sg-sgp05.altr.cc:25251/api';
+        
+        // Cooldown duration (24 hours)
+        const COOLDOWN_DURATION = 24 * 60 * 60 * 1000;
+        
+        // Update intervals
+        const DISCORD_UPDATE_INTERVAL = 30000; // 30 seconds
+        const COOLDOWN_UPDATE_INTERVAL = 1000; // 1 second
+        
+        // State variables
+        let lastRequestTime = null;
+        let cooldownInterval = null;
+        let discordUpdateInterval = null;
+        
+        // ==================== INITIALIZATION ====================
+        window.addEventListener('load', function() {
+            // Initialize page navigation
+            const hash = window.location.hash.substring(1);
+            if (hash === 'unraidable-cave') {
+                showPage('unraidable-cave');
+            } else {
+                showPage('home');
+            }
+            
+            // Initialize systems
+            initPage();
+        });
+        
+        function initPage() {
+            // Load saved data
+            loadSavedData();
+            
+            // Start Discord stats updates
+            updateDiscordStats();
+            discordUpdateInterval = setInterval(updateDiscordStats, DISCORD_UPDATE_INTERVAL);
+            
+            // Start cooldown timer updates
+            cooldownInterval = setInterval(updateCooldownDisplay, COOLDOWN_UPDATE_INTERVAL);
+            
+            // Setup event listeners
+            setupEventListeners();
+        }
+        
+        // ==================== PAGE NAVIGATION ====================
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show the selected page
+            document.getElementById(`${pageId}-page`).classList.add('active');
+            
+            // Update active nav link
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-page') === pageId) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // Update URL hash
+            window.location.hash = pageId;
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Update cooldown timer if on cave page
+            if (pageId === 'unraidable-cave') {
+                updateCooldownDisplay();
+            }
+        }
+        
+        // ==================== EVENT LISTENERS ====================
+        function setupEventListeners() {
+            // Navigation links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const pageId = this.getAttribute('data-page');
+                    showPage(pageId);
+                });
+            });
+            
+            // Logo click
+            document.getElementById('homeLogo').addEventListener('click', function(e) {
+                e.preventDefault();
+                showPage('home');
+            });
+            
+            // Discord invite button
+            document.getElementById('discordInviteBtn').addEventListener('click', function() {
+                window.open('https://dsc.gg/PHRUSTV2', '_blank');
+            });
+            
+            // Copy IP buttons
+            document.querySelectorAll('.copy-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const ip = this.getAttribute('data-ip');
+                    copyToClipboard(ip);
+                });
+            });
+            
+            // Send request button
+            document.getElementById('sendRequestBtn').addEventListener('click', submitCaveRequest);
+        }
+        
+        // ==================== DISCORD STATS FUNCTIONS ====================
+        async function updateDiscordStats() {
+            try {
+                const response = await fetch(`${BOT_API_URL}/discord/stats`);
+                if (!response.ok) throw new Error('Failed to fetch Discord stats');
+                
+                const data = await response.json();
+                updateDiscordUI(data);
+                
+                // Also fetch online members
+                const onlineResponse = await fetch(`${BOT_API_URL}/discord/online`);
+                if (onlineResponse.ok) {
+                    const onlineData = await onlineResponse.json();
+                    updateOnlineMembersUI(onlineData);
+                }
+            } catch (error) {
+                console.error('Error fetching Discord stats:', error);
+                // Use fallback data
+                updateDiscordUI(getFallbackStats());
+            }
+        }
+        
+        function updateDiscordUI(data) {
+            // Update member counts
+            document.getElementById('discordMembers').textContent = data.totalMembers || '127';
+            document.getElementById('discordOnline').textContent = data.onlineMembers || '89';
+            document.getElementById('discordBoost').textContent = data.boostCount || '5';
+            document.getElementById('onlineCount').textContent = data.onlineMembers || '89';
+            
+            // Update last updated time
+            if (data.lastUpdated) {
+                const time = new Date(data.lastUpdated).toLocaleTimeString();
+                console.log(`🔄 Discord stats updated at ${time}`);
+            }
+        }
+        
+        function updateOnlineMembersUI(onlineData) {
+            const avatarsContainer = document.getElementById('onlineAvatars');
+            avatarsContainer.innerHTML = '';
+            
+            if (onlineData.members && onlineData.members.length > 0) {
+                // Show real online members
+                onlineData.members.forEach((member, index) => {
+                    const avatar = document.createElement('div');
+                    avatar.className = 'member-avatar';
+                    avatar.title = member.username;
+                    
+                    // Try to use actual avatar, fallback to color
+                    if (member.avatar) {
+                        avatar.style.backgroundImage = `url('${member.avatar}')`;
+                        avatar.style.backgroundSize = 'cover';
+                        avatar.style.backgroundPosition = 'center';
+                    } else {
+                        // Generate color from username
+                        const colors = ['#5865F2', '#EB459E', '#ED4245', '#FEE75C', '#57F287'];
+                        const colorIndex = member.username.charCodeAt(0) % colors.length;
+                        avatar.style.backgroundColor = colors[colorIndex];
+                    }
+                    
+                    avatar.style.marginLeft = index > 0 ? '-8px' : '0';
+                    avatarsContainer.appendChild(avatar);
+                });
+            } else {
+                // Show placeholder avatars
+                for (let i = 0; i < 5; i++) {
+                    const avatar = document.createElement('div');
+                    avatar.className = 'member-avatar';
+                    avatar.style.backgroundColor = '#4a4a4a';
+                    avatar.style.marginLeft = i > 0 ? '-8px' : '0';
+                    avatar.style.opacity = '0.5';
+                    avatarsContainer.appendChild(avatar);
+                }
+            }
+        }
+        
+        function getFallbackStats() {
+            return {
+                totalMembers: 127 + Math.floor(Math.random() * 10),
+                onlineMembers: 89 + Math.floor(Math.random() * 20),
+                boostCount: 5 + Math.floor(Math.random() * 3)
+            };
+        }
+        
+        // ==================== COOLDOWN MANAGEMENT ====================
+        function loadSavedData() {
+            // Load last request time
+            const savedTime = localStorage.getItem('phrustv2_last_request');
+            if (savedTime) {
+                lastRequestTime = parseInt(savedTime);
+            }
+            
+            // Load Minecraft username
+            const savedMCUsername = localStorage.getItem('phrustv2_minecraft_username');
+            if (savedMCUsername) {
+                document.getElementById('minecraftUsername').value = savedMCUsername;
+            }
+            
+            updateCooldownDisplay();
+        }
+        
+        function updateCooldownDisplay() {
+            if (!lastRequestTime) {
+                document.getElementById('cooldownTimer').textContent = 'Ready to submit!';
+                document.getElementById('sendRequestBtn').disabled = false;
+                return;
+            }
+            
+            const now = Date.now();
+            const timeSinceLastRequest = now - lastRequestTime;
+            const timeRemaining = COOLDOWN_DURATION - timeSinceLastRequest;
+            
+            if (timeRemaining <= 0) {
+                // Cooldown expired
+                document.getElementById('cooldownTimer').textContent = 'Ready to submit!';
+                document.getElementById('sendRequestBtn').disabled = false;
+                lastRequestTime = null;
+                localStorage.removeItem('phrustv2_last_request');
+            } else {
+                // Still in cooldown
+                const hours = Math.floor(timeRemaining / (1000 * 60 * 60));
+                const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+                
+                document.getElementById('cooldownTimer').textContent = `${hours}h ${minutes}m ${seconds}s`;
+                document.getElementById('sendRequestBtn').disabled = true;
+            }
+        }
+        
+        // ==================== REQUEST SUBMISSION ====================
+        async function submitCaveRequest() {
+            const minecraftUsername = document.getElementById('minecraftUsername').value.trim();
+            const reason = document.getElementById('reason').value.trim();
+            
+            // Hide all messages
+            hideAllMessages();
+            
+            // Validation
+            if (!minecraftUsername) {
+                showError('Please enter your Minecraft username.');
+                return;
+            }
+            
+            if (!isValidMinecraftUsername(minecraftUsername)) {
+                showError('Invalid Minecraft username. Must be 3-16 characters, letters, numbers, or underscores.');
+                return;
+            }
+            
+            if (!reason) {
+                showError('Please provide a reason for requesting an unraidable cave.');
+                return;
+            }
+            
+            if (reason.length < 20) {
+                showError('Please provide a more detailed reason (at least 20 characters).');
+                return;
+            }
+            
+            // Check cooldown
+            if (lastRequestTime) {
+                const timeSinceLastRequest = Date.now() - lastRequestTime;
+                if (timeSinceLastRequest < COOLDOWN_DURATION) {
+                    const hoursRemaining = Math.ceil((COOLDOWN_DURATION - timeSinceLastRequest) / (1000 * 60 * 60));
+                    showCooldown(`You need to wait ${hoursRemaining} more hour(s) before submitting another request.`);
+                    return;
+                }
+            }
+            
+            // Show loading spinner
+            const loader = document.getElementById('requestLoader');
+            loader.style.display = 'block';
+            
+            // Prepare request data
+            const requestData = {
+                minecraftUsername: minecraftUsername,
+                reason: reason
+            };
+            
+            try {
+                // Send to Discord bot API
+                const response = await fetch(`${BOT_API_URL}/requests/submit`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestData)
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Save usernames to localStorage
+                    localStorage.setItem('phrustv2_minecraft_username', minecraftUsername);
+                    
+                    // Set cooldown
+                    lastRequestTime = Date.now();
+                    localStorage.setItem('phrustv2_last_request', lastRequestTime.toString());
+                    
+                    // Show success
+                    showSuccess();
+                    
+                    // Clear form
+                    document.getElementById('reason').value = '';
+                } else {
+                    showError(result.message || 'Request failed. Please try again.');
+                }
+                
+            } catch (error) {
+                console.error('Error submitting request:', error);
+                showError(error.message || 'Failed to submit request. Please try again later or contact an admin.');
+            } finally {
+                // Hide loader
+                loader.style.display = 'none';
+            }
+        }
+        
+        function isValidMinecraftUsername(username) {
+            // Minecraft username validation: 3-16 characters, letters, numbers, underscores
+            return /^[a-zA-Z0-9_]{3,16}$/.test(username);
+        }
+        
+        // ==================== MESSAGE DISPLAY FUNCTIONS ====================
+        function hideAllMessages() {
+            document.getElementById('successMessage').classList.remove('show');
+            document.getElementById('errorMessage').classList.remove('show');
+            document.getElementById('cooldownMessage').classList.remove('show');
+        }
+        
+        function showSuccess() {
+            const successMessage = document.getElementById('successMessage');
+            successMessage.classList.add('show');
+            successMessage.scrollIntoView({ behavior: 'smooth' });
+            
+            // Update cooldown display
+            updateCooldownDisplay();
+        }
+        
+        function showError(message) {
+            document.getElementById('errorText').textContent = message;
+            document.getElementById('errorMessage').classList.add('show');
+            document.getElementById('errorMessage').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function showCooldown(message) {
+            document.getElementById('cooldownText').textContent = message;
+            document.getElementById('cooldownMessage').classList.add('show');
+            document.getElementById('cooldownMessage').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // ==================== UTILITY FUNCTIONS ====================
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                // Show temporary feedback
+                const event = new Event('copied');
+                event.text = text;
+                document.dispatchEvent(event);
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+            });
+        }
+        
+        // Listen for copy events to show feedback
+        document.addEventListener('copied', function(e) {
+            const buttons = document.querySelectorAll('.copy-btn');
+            buttons.forEach(button => {
+                if (button.getAttribute('data-ip') === e.text) {
+                    const originalText = button.textContent;
+                    button.textContent = 'Copied!';
+                    button.style.backgroundColor = '#D32F2F';
+                    
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                        button.style.backgroundColor = '';
+                    }, 2000);
+                }
+            });
+        });
+        
+        // Mobile menu toggle
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.style.display = navMenu.style.display === 'flex' ? 'none' : 'flex';
+            
+            const icon = this.querySelector('i');
+            if (icon.classList.contains('fa-bars')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+        
+        // Adjust mobile menu on window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                document.getElementById('navMenu').style.display = 'flex';
+                document.querySelector('#mobileMenuBtn i').classList.remove('fa-times');
+                document.querySelector('#mobileMenuBtn i').classList.add('fa-bars');
+            }
+        });
+        
+        // Clean up intervals when page is hidden
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                if (discordUpdateInterval) clearInterval(discordUpdateInterval);
+                if (cooldownInterval) clearInterval(cooldownInterval);
+            } else {
+                if (!discordUpdateInterval) {
+                    discordUpdateInterval = setInterval(updateDiscordStats, DISCORD_UPDATE_INTERVAL);
+                }
+                if (!cooldownInterval) {
+                    cooldownInterval = setInterval(updateCooldownDisplay, COOLDOWN_UPDATE_INTERVAL);
+                }
+            }
+        });
+        
+        // Handle offline/online status
+        window.addEventListener('offline', function() {
+            showError('You are offline. Please check your internet connection.');
+        });
+        
+        window.addEventListener('online', function() {
+            console.log('Back online, updating stats...');
+            updateDiscordStats();
+        });
+    </script>
+</body>
+</html>
